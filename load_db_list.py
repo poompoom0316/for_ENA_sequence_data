@@ -119,12 +119,15 @@ def concat_total_data():
     res_tot = {keyi: [i[keyi] for i in total_dfs_use2] for keyi in li}
 
     seiiku_place = set([element for lis in res_tot["seiiku_place"] for element in lis])
+    seiiku_place_seelcted = set([i.split(", ")[1] if "その他" in i else i.split(", ")[0] for i in seiiku_place])
 
     koshu_df = pd.concat([pd.concat(i) for i in res_tot["koshu"]])
     koshu_df_unique = koshu_df.loc[:,koshu_df.columns[koshu_df.columns!='var_trial_id']].drop_duplicates()
 
     seiiku_df = pd.concat([pd.concat(i) for i in res_tot["seiiku"]])
     seiiku_df_use = seiiku_df.loc[~seiiku_df["試験年次"].str.contains("平均")]
+
+    ret = geocoder.osm('農研機構東北農業研究センター', timeout=5.0)
 
 
 
